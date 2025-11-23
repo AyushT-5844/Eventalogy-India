@@ -94,10 +94,15 @@ class VendorService extends ChangeNotifier {
     return _firestore
         .collection('vendors')
         .where('minPrice', isGreaterThanOrEqualTo: minPrice)
-        .where('maxPrice', isLessThanOrEqualTo: maxPrice)
+        .orderBy('minPrice')
         .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => Vendor.fromFirestore(doc)).toList());
+        .map((snapshot) {
+      // Filter in memory for maxPrice since Firestore doesn't support range on multiple fields
+      return snapshot.docs
+          .map((doc) => Vendor.fromFirestore(doc))
+          .where((vendor) => vendor.maxPrice <= maxPrice)
+          .toList();
+    });
   }
   
   // Get vendors by city

@@ -23,8 +23,11 @@ class AuthService extends ChangeNotifier {
         password: password,
       );
       
-      // Update last login
-      await _updateLastLogin(credential.user!.uid);
+      // Update last login (non-blocking)
+      _updateLastLogin(credential.user!.uid).catchError((e) {
+        // Log error but don't fail the login
+        debugPrint('Failed to update last login: $e');
+      });
       
       notifyListeners();
       return credential;
