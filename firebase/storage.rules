@@ -1,0 +1,50 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isValidImageType() {
+      return request.resource.contentType.matches('image/.*');
+    }
+    
+    function isValidFileSize(maxSizeMB) {
+      return request.resource.size < maxSizeMB * 1024 * 1024;
+    }
+    
+    // User profile images
+    match /users/{userId}/profile/{fileName} {
+      allow read: if true;
+      allow write: if isAuthenticated() && 
+                    request.auth.uid == userId &&
+                    isValidImageType() &&
+                    isValidFileSize(5);
+    }
+    
+    // Event images
+    match /events/{eventId}/images/{fileName} {
+      allow read: if true;
+      allow write: if isAuthenticated() &&
+                    isValidImageType() &&
+                    isValidFileSize(10);
+    }
+    
+    // Vendor portfolio images
+    match /vendors/{vendorId}/portfolio/{fileName} {
+      allow read: if true;
+      allow write: if isAuthenticated() &&
+                    isValidImageType() &&
+                    isValidFileSize(10);
+    }
+    
+    // Vendor documents (certifications, etc.)
+    match /vendors/{vendorId}/documents/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() &&
+                    isValidFileSize(5);
+    }
+  }
+}
