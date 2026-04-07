@@ -23,6 +23,9 @@ class MainActivity : ComponentActivity() {
         fun j(){
             println("commit")
         }
+        fun p(){
+            println("commit")
+        }
     }
 }
 
