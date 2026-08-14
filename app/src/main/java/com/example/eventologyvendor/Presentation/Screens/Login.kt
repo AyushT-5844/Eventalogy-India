@@ -43,10 +43,13 @@ import androidx.compose.ui.unit.sp
 import com.example.eventologyvendor.R
 
 @Composable
-fun Login(){
+fun Login(
+    onNavigateToVendorRegistration: () -> Unit = {},
+    onNavigateToCustomerHome: () -> Unit = {}
+){
 
 
-    var selected by remember { mutableStateOf("Customer") }
+    var selected by remember { mutableStateOf("Vendor") }
 
     Box(modifier = Modifier.fillMaxSize()
         .background(color = colorResource( R.color.background)),
@@ -87,14 +90,45 @@ fun Login(){
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(50.dp))
-            SignUpButton(selected)
+            SignUpButton(
+                role = selected,
+                onClick = {
+                    if (selected == "Customer") {
+                        onNavigateToCustomerHome()
+                    } else {
+                        onNavigateToVendorRegistration()
+                    }
+                }
+            )
 
 
             Spacer(Modifier.height(10.dp))
-            ButtonWithLogo(selected,"Google", image = R.drawable.google)
+            ButtonWithLogo(
+                role = selected,
+                string = "Google",
+                image = R.drawable.google,
+                onClick = {
+                    if (selected == "Customer") {
+                        onNavigateToCustomerHome()
+                    } else {
+                        onNavigateToVendorRegistration()
+                    }
+                }
+            )
 
             Spacer(Modifier.height(10.dp))
-            ButtonWithLogo(selected,"Apple", image = R.drawable.apple)
+            ButtonWithLogo(
+                role = selected,
+                string = "Apple",
+                image = R.drawable.apple,
+                onClick = {
+                    if (selected == "Customer") {
+                        onNavigateToCustomerHome()
+                    } else {
+                        onNavigateToVendorRegistration()
+                    }
+                }
+            )
         }
     }
 }
@@ -143,7 +177,7 @@ fun ToggleUser(
 }
 
 @Composable
-fun SignUpButton(role: String) {
+fun SignUpButton(role: String, onClick: () -> Unit = {}) {
 
     Box(
         modifier = Modifier
@@ -151,14 +185,7 @@ fun SignUpButton(role: String) {
             .height(56.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(colorResource(R.color.primary))
-            .clickable {
-
-                if (role == "Customer") {
-                    signUpCustomer()
-                } else {
-                    signUpVendor()
-                }
-            },
+            .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -175,7 +202,7 @@ fun SignUpButton(role: String) {
 }
 
 @Composable
-fun ButtonWithLogo(role: String,string:String,image:Int) {
+fun ButtonWithLogo(role: String, string: String, image: Int, onClick: () -> Unit = {}) {
 
 
     Box(
@@ -185,13 +212,7 @@ fun ButtonWithLogo(role: String,string:String,image:Int) {
             .border(width = 2.dp, color = colorResource(R.color.background1), shape = RoundedCornerShape(16.dp))
             .clip(RoundedCornerShape(16.dp))
             .background(colorResource(R.color.buttonBackground))
-            .clickable {
-                if (role == "Customer") {
-                    signUpCustomer()
-                } else {
-                    signUpVendor()
-                }
-            },
+            .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Row(verticalAlignment = Alignment.CenterVertically,

@@ -327,7 +327,7 @@ private fun TagChip(tag: String, isSelected: Boolean, onClick: () -> Unit) {
 // ═══════════════════════════════════════════════════════════════════════════
 
 @Composable
-fun PersonalDetailsScreen(onNext: () -> Unit) {
+fun PersonalDetailsScreen(onNext: () -> Unit = {}, onBack: () -> Unit = {}) {
     var fullName         by remember { mutableStateOf("") }
     var email            by remember { mutableStateOf("") }
     var isCompany        by remember { mutableStateOf(false) }
@@ -356,7 +356,7 @@ fun PersonalDetailsScreen(onNext: () -> Unit) {
                     .size(40.dp)
                     .clip(CircleShape)
                     .background(CardDark)
-                    .clickable { },
+                    .clickable { onBack() },
                 contentAlignment = Alignment.Center
             ) {
                 Icon(

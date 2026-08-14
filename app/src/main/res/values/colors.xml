@@ -13,4 +13,11 @@
     <color name="background1">#5C5C5C</color>
     <color name="textColor">#8C8C8C</color>
     <color name="buttonBackground">#1F1F1F</color>
+    <color name="cardDark">#1A1A1A</color>
+    <color name="cardSurface">#141414</color>
+    <color name="greenActive">#30D158</color>
+    <color name="orangeTag">#FF9500</color>
+    <color name="chipBackground">#2A2A2A</color>
+    <color name="divider">#2A2A2A</color>
+    <color name="mapPlaceholder">#1E1E1E</color>
 </resources>
